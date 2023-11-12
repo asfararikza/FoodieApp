@@ -13,14 +13,6 @@ class BaseNetwork {
 
   static Future<Map<String, dynamic>> _processResponse(
       http.Response response) async {
-    // final body = response.body;
-    // if (body.isNotEmpty) {
-    //   final jsonBody = json.decode(body);
-    //   return jsonBody;
-    // } else {
-    //   print("processResponse error");
-    //   return {"error": true};
-    // }
     if (response.statusCode == 200) {
       final body = response.body;
       if (body.isNotEmpty) {

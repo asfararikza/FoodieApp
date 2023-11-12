@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:random_resep/home_screen.dart';
+import 'package:random_resep/screen/calci_track_screen.dart';
+import 'package:random_resep/screen/dummy_home.dart';
+import 'package:random_resep/screen/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,12 +10,11 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: HomeScreen(),
+      home: dummyHomeScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

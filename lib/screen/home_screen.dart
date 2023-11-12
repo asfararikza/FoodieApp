@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:random_resep/get_random_recipes_api.dart';
-import 'package:random_resep/model.dart';
-import 'package:random_resep/recipes_model.dart';
+import 'package:random_resep/api/get_random_recipes_api.dart';
+import 'package:random_resep/api/recipes_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -32,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
             return Text("ADA ERROR");
           }
           if (snapshot.hasData && snapshot.data != null) {
-            // RecipesModel recipes = RecipesModel.fromJson(snapshot.data!);
             RecipeModel recipes = RecipeModel.fromJson(snapshot.data!);
             return _buildHomeScreen(recipes);
           }
@@ -71,7 +69,7 @@ Widget _buildHomeScreen(RecipeModel recipes) {
           height: 16,
         ),
         SizedBox(
-            height: 280,
+            height: 300,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: recipes.recipes?.length,
@@ -79,8 +77,13 @@ Widget _buildHomeScreen(RecipeModel recipes) {
                 var recipe = recipes.recipes?[index];
 
                 return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.lightGreen[100],
+                  ),
+                  padding: EdgeInsets.all(15),
                   width: 200,
+                  margin: EdgeInsets.only(right: 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
