@@ -29,13 +29,20 @@ class _DetailRecipeScreenState extends State<DetailRecipeScreen> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            backgroundColor: Colors.white,
             expandedHeight: 250.0,
             floating: false,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              background: Image.network(
-                data.recipeData["recipes"][0]["image"].toString(),
-                fit: BoxFit.cover,
+              background: Container(
+                color: Colors.white,
+                padding: EdgeInsets.all(30),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.network(
+                      data.recipeData["recipes"][0]["image"].toString(),
+                      fit: BoxFit.cover,
+                    )),
               ),
             ),
             leading: Container(
@@ -59,6 +66,7 @@ class _DetailRecipeScreenState extends State<DetailRecipeScreen> {
             delegate: SliverChildListDelegate(
               [
                 Container(
+                  color: Colors.white,
                   padding: EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,18 +113,18 @@ class _DetailRecipeScreenState extends State<DetailRecipeScreen> {
                                   SizedBox(
                                     width: 15,
                                   ),
-                                  Icon(
-                                    Icons.room_service_outlined,
-                                    size: 20,
-                                    color: Colors.grey,
-                                  ),
-                                  Text(
-                                    "${data.recipeData["recipes"][0]["servings"]} servings",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
+                                  // Icon(
+                                  //   Icons.room_service_outlined,
+                                  //   size: 20,
+                                  //   color: Colors.grey,
+                                  // ),
+                                  // Text(
+                                  //   "${data.recipeData["recipes"][0]["servings"]} servings",
+                                  //   style: TextStyle(
+                                  //     fontSize: 16,
+                                  //     color: Colors.grey,
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ],
@@ -129,31 +137,241 @@ class _DetailRecipeScreenState extends State<DetailRecipeScreen> {
                     ],
                   ),
                 ),
+                // Container(
+                //   height: 5.0,
+                // ),
+                // Card(
+                //   child:
                 Container(
-                  color: Colors.grey[200],
-                  height: 16.0,
-                ),
-                Card(
+                  color: Colors.white,
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(30.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Ingredients",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.circle,
+                                  color: Colors.deepOrange,
+                                ),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Text(
+                                  "Ingredients",
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(Icons.room_service_outlined,
+                                    color: Colors.deepOrange),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Text(
+                                  "${data.recipeData["recipes"][0]["servings"]} servings",
+                                  style: TextStyle(fontSize: 18),
+                                )
+                              ],
+                            )
+                          ],
                         ),
                         SizedBox(height: 16.0),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: List.generate(
-                            4,
-                            (index) => Text(
-                              "- ${data.recipeData["recipes"][0]["analyzedInstructions"][0]["steps"][index]["step"]}",
-                              style: TextStyle(fontSize: 16.0),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.chevron_right,
+                                      color: Colors.deepOrange[200],
+                                    ),
+                                    Text(
+                                      "${data.recipeData["recipes"][0]["extendedIngredients"][0]["nameClean"]}",
+                                      style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "${data.recipeData["recipes"][0]["extendedIngredients"][0]["amount"]}",
+                                      style: TextStyle(
+                                          fontSize: 14.0,
+                                          color: Colors.grey[700]),
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      "${data.recipeData["recipes"][0]["extendedIngredients"][0]["unit"]}",
+                                      style: TextStyle(
+                                          fontSize: 14.0,
+                                          color: Colors.grey[700]),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.chevron_right,
+                                      color: Colors.deepOrange[200],
+                                    ),
+                                    Text(
+                                      "${data.recipeData["recipes"][0]["extendedIngredients"][0]["nameClean"]}",
+                                      style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "${data.recipeData["recipes"][0]["extendedIngredients"][0]["amount"]}",
+                                      style: TextStyle(
+                                          fontSize: 14.0,
+                                          color: Colors.grey[700]),
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      "${data.recipeData["recipes"][0]["extendedIngredients"][0]["unit"]}",
+                                      style: TextStyle(
+                                          fontSize: 14.0,
+                                          color: Colors.grey[700]),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.chevron_right,
+                                      color: Colors.deepOrange[200],
+                                    ),
+                                    Text(
+                                      "${data.recipeData["recipes"][0]["extendedIngredients"][0]["nameClean"]}",
+                                      style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "${data.recipeData["recipes"][0]["extendedIngredients"][0]["amount"]}",
+                                      style: TextStyle(
+                                          fontSize: 14.0,
+                                          color: Colors.grey[700]),
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      "${data.recipeData["recipes"][0]["extendedIngredients"][0]["unit"]}",
+                                      style: TextStyle(
+                                          fontSize: 14.0,
+                                          color: Colors.grey[700]),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.chevron_right,
+                                      color: Colors.deepOrange[200],
+                                    ),
+                                    Text(
+                                      "${data.recipeData["recipes"][0]["extendedIngredients"][0]["nameClean"]}",
+                                      style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "${data.recipeData["recipes"][0]["extendedIngredients"][0]["amount"]}",
+                                      style: TextStyle(
+                                          fontSize: 14.0,
+                                          color: Colors.grey[700]),
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      "${data.recipeData["recipes"][0]["extendedIngredients"][0]["unit"]}",
+                                      style: TextStyle(
+                                          fontSize: 14.0,
+                                          color: Colors.grey[700]),
+                                    )
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -162,32 +380,89 @@ class _DetailRecipeScreenState extends State<DetailRecipeScreen> {
                   ),
                 ),
                 Container(
-                  color: Colors.grey[200],
-                  height: 16.0,
-                ),
-                Card(
+                  color: Colors.white,
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(30.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Instructions",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.circle,
+                              color: Colors.deepOrange,
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              "Instructions",
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                         SizedBox(height: 16.0),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: List.generate(
-                            4,
-                            (index) => Text(
-                              "${index + 1}. ${data.recipeData["recipes"][0]["analyzedInstructions"][0]["steps"][index]["step"]}",
-                              style: TextStyle(fontSize: 16.0),
-                            ),
-                          ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.grey[50],
+                          child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Text(
+                                "${data.recipeData["recipes"][0]["analyzedInstructions"][0]["steps"][0]["step"]}",
+                                style: TextStyle(fontSize: 16.0),
+                              )
+                              // ]
+                              // List.generate(
+                              //   4,
+                              //   (index) => Text(
+                              //     "${index + 1}. ${data.recipeData["recipes"][0]["analyzedInstructions"][0]["steps"][index]["step"]}",
+                              //     style: TextStyle(fontSize: 16.0),
+                              //   ),
+                              // ),
+                              // ),
+                              ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.grey[50],
+                          child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Text(
+                                "${data.recipeData["recipes"][0]["analyzedInstructions"][0]["steps"][1]["step"]}",
+                                style: TextStyle(fontSize: 16.0),
+                              )),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.grey[50],
+                          child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Text(
+                                "${data.recipeData["recipes"][0]["analyzedInstructions"][0]["steps"][2]["step"]}",
+                                style: TextStyle(fontSize: 16.0),
+                              )),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.grey[50],
+                          child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Text(
+                                "${data.recipeData["recipes"][0]["analyzedInstructions"][0]["steps"][3]["step"]}",
+                                style: TextStyle(fontSize: 16.0),
+                              )),
                         ),
                       ],
                     ),
