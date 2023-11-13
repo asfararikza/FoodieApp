@@ -5,6 +5,7 @@ import 'package:random_resep/screen/category_screen.dart';
 import 'package:random_resep/dummy_data.dart';
 import 'package:random_resep/api/get_random_recipes_api.dart';
 import 'package:random_resep/api/recipes_model.dart';
+import 'package:random_resep/screen/detaill_recipe_screen.dart';
 import 'package:random_resep/screen/result_search_screen.dart';
 
 class dummyHomeScreen extends StatefulWidget {
@@ -152,110 +153,121 @@ class _dummyHomeScreenState extends State<dummyHomeScreen> {
                 ),
 
                 //Popular Recipes Cards
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.grey[200],
-                  ),
-                  padding: EdgeInsets.all(15),
-                  width: 220,
-                  margin: EdgeInsets.only(right: 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      //Recipe Image
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.network(
-                          data.recipeData["recipes"][0]["image"].toString(),
-                          height: 130,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-
-                      //Recipe Title
-                      Text(
-                        data.recipeData["recipes"][0]["title"].toString(),
-                        style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-
-                      //Recipe Calories
-
-                      // FutureBuilder(
-                      //   future: ApiRandomRecipes.instance
-                      //       .informationRecipe("660504"),
-                      //   builder:
-                      //       (BuildContext context, AsyncSnapshot snapshot) {
-                      //     if (snapshot.hasData && snapshot.data != null) {
-                      //       InfoRecipeModel dataInfo =
-                      //           InfoRecipeModel.fromJson(snapshot.data!);
-                      //       return Text(
-                      //           " ${dataInfo.nutrition?.nutrients?[0].amount} Calories",
-                      //           style: TextStyle(color: Colors.deepOrange));
-                      //     }
-                      //     return Text(
-                      //       "Calories",
-                      //       style: TextStyle(color: Colors.deepOrange),
-                      //     );
-                      //   },
-                      // ),
-
-                      SizedBox(
-                        height: 10,
-                      ),
-
-                      //Recipe Info
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.schedule_outlined,
-                                color: Colors.grey,
-                                size: 15,
-                              ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Text(
-                                "${data.recipeData["recipes"][0]["readyInMinutes"]} mins",
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            ],
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DetailRecipeScreen(
+                                  RecipeId: data.recipeData["recipes"][0]["id"]
+                                      .toString(),
+                                )));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.grey[200],
+                    ),
+                    padding: EdgeInsets.all(15),
+                    width: 220,
+                    margin: EdgeInsets.only(right: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //Recipe Image
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.network(
+                            data.recipeData["recipes"][0]["image"].toString(),
+                            height: 130,
+                            fit: BoxFit.cover,
                           ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.room_service_outlined,
-                                color: Colors.grey,
-                                size: 15,
-                              ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Text(
-                                "${data.recipeData["recipes"][0]["servings"]} servings",
-                                style: TextStyle(
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+
+                        //Recipe Title
+                        Text(
+                          data.recipeData["recipes"][0]["title"].toString(),
+                          style: TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                        //Recipe Calories
+
+                        // FutureBuilder(
+                        //   future: ApiRandomRecipes.instance
+                        //       .informationRecipe("660504"),
+                        //   builder:
+                        //       (BuildContext context, AsyncSnapshot snapshot) {
+                        //     if (snapshot.hasData && snapshot.data != null) {
+                        //       InfoRecipeModel dataInfo =
+                        //           InfoRecipeModel.fromJson(snapshot.data!);
+                        //       return Text(
+                        //           " ${dataInfo.nutrition?.nutrients?[0].amount} Calories",
+                        //           style: TextStyle(color: Colors.deepOrange));
+                        //     }
+                        //     return Text(
+                        //       "Calories",
+                        //       style: TextStyle(color: Colors.deepOrange),
+                        //     );
+                        //   },
+                        // ),
+
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                        //Recipe Info
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.schedule_outlined,
                                   color: Colors.grey,
+                                  size: 15,
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Text(
+                                  "${data.recipeData["recipes"][0]["readyInMinutes"]} mins",
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.room_service_outlined,
+                                  color: Colors.grey,
+                                  size: 15,
+                                ),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Text(
+                                  "${data.recipeData["recipes"][0]["servings"]} servings",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
