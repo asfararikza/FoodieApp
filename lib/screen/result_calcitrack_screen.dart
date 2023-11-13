@@ -5,7 +5,7 @@ import 'package:random_resep/api/get_random_recipes_api.dart';
 import 'package:random_resep/api/recipes_model.dart';
 import 'package:random_resep/api/suggestion_recipe_api.dart';
 import 'package:random_resep/api/suggestion_recipe_model.dart';
-import 'package:random_resep/dummy_data.dart';
+import 'package:random_resep/screen/dummy/dummy_data.dart';
 
 class ResultCalciTrackScreen extends StatefulWidget {
   const ResultCalciTrackScreen({
@@ -224,21 +224,6 @@ class _ResultCalciTrackScreenState extends State<ResultCalciTrackScreen> {
                       return Text("ADA ERROR");
                     }
                     if (snapshot.hasData && snapshot.data != null) {
-                      // List<Map<String, dynamic>> jsonList = List.from(json.decode(snapshot.data!));
-
-                      // List<SuggestionRecipesModel> recipes = jsonList
-                      // .map((jsonRecipe) => SuggestionRecipesModel.fromJson(jsonRecipe))
-                      // .toList();
-
-                      // List<SuggestionRecipesModel> recipes = (json
-                      //         .decode(snapshot.data as String) as List<dynamic>)
-                      //     .map((jsonRecipe) =>
-                      //         SuggestionRecipesModel.fromJson(jsonRecipe))
-                      //     .toList();
-
-                      // SuggestionRecipesModel recipes =
-                      //     SuggestionRecipesModel.fromJson(snapshot.data!);
-
                       List<Map<String, dynamic>> listRecipes =
                           List.from(snapshot.data! as List<dynamic>);
 

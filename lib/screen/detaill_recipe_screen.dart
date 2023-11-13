@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:random_resep/dummy_data.dart';
+import 'package:random_resep/screen/dummy/dummy_data.dart';
 
 class DetailRecipeScreen extends StatefulWidget {
   const DetailRecipeScreen({super.key, required this.RecipeId});

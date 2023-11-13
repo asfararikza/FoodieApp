@@ -19,10 +19,9 @@ class _RegisterPageState extends State<RegisterPage> {
         body: Container(
           decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/login_hero.png'),
-                fit: BoxFit.cover,
-              )
-          ),
+            image: AssetImage('assets/login_hero.png'),
+            fit: BoxFit.cover,
+          )),
           child: Center(
             child: SingleChildScrollView(
               child: Column(
@@ -40,7 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Padding(
-                            padding: const EdgeInsets.all(24),
+                          padding: const EdgeInsets.all(24),
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,13 +56,16 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 20,),
+                              SizedBox(
+                                height: 20,
+                              ),
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 16),
                                 child: TextFormField(
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
                                     labelText: 'Full Name',
                                     labelStyle: GoogleFonts.poppins(),
                                     enabledBorder: OutlineInputBorder(
@@ -75,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(
-                                        color: const Color(0xff04b39ef),
+                                        color: Colors.lightGreen,
                                         width: 2,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
@@ -92,7 +94,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                 child: TextFormField(
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
                                     labelText: 'Email',
                                     labelStyle: GoogleFonts.poppins(),
                                     enabledBorder: OutlineInputBorder(
@@ -104,7 +107,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(
-                                        color: const Color(0xff04b39ef),
+                                        color: Colors.lightGreen,
                                         width: 2,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
@@ -121,7 +124,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                 child: TextFormField(
                                   obscureText: _isPasswordObscure,
                                   decoration: InputDecoration(
-                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
                                     labelText: 'Password',
                                     labelStyle: GoogleFonts.poppins(),
                                     enabledBorder: OutlineInputBorder(
@@ -133,7 +137,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(
-                                        color: const Color(0xff04b39ef),
+                                        color: Colors.lightGreen,
                                         width: 2,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
@@ -147,7 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         // Mengubah visibilitas teks sandi
                                         setState(() {
                                           _isPasswordObscure =
-                                          !_isPasswordObscure;
+                                              !_isPasswordObscure;
                                         });
                                       },
                                       child: Icon(
@@ -166,7 +170,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                 child: TextFormField(
                                   obscureText: _isPasswordObscure,
                                   decoration: InputDecoration(
-                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
                                     labelText: 'Confirm Password',
                                     labelStyle: GoogleFonts.poppins(),
                                     enabledBorder: OutlineInputBorder(
@@ -178,7 +183,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(
-                                        color: const Color(0xff04b39ef),
+                                        color: Colors.lightGreen,
                                         width: 2,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
@@ -192,7 +197,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         // Mengubah visibilitas teks sandi
                                         setState(() {
                                           _isPasswordObscure =
-                                          !_isPasswordObscure;
+                                              !_isPasswordObscure;
                                         });
                                       },
                                       child: Icon(
@@ -217,19 +222,24 @@ class _RegisterPageState extends State<RegisterPage> {
                                           _isTermsChecked = value ?? false;
                                         });
                                       },
-                                      activeColor: const Color(0xff04b39ef),
+                                      activeColor: Colors.lightGreen,
                                     ),
                                     RichText(
                                       text: TextSpan(
-                                        text: 'I agree to the applicable ',
-                                        style: GoogleFonts.poppins(),
+                                        text: 'I agree to the applicable\n',
+                                        style: GoogleFonts.poppins(
+                                          textStyle: const TextStyle(
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
                                         children: const [
                                           TextSpan(
                                             text: 'Terms of Service',
                                             style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: const Color(0xff04b39ef),
-                                            ),
+                                                fontWeight: FontWeight.bold,
+                                                // color: const Color(0xff04b39ef),
+                                                color: Colors.lightGreen),
                                           ),
                                         ],
                                       ),
@@ -242,7 +252,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 child: ElevatedButton(
                                   onPressed: () {},
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xff04b39ef),
+                                    backgroundColor: Colors.lightGreen,
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 16, horizontal: 24),
                                     shape: RoundedRectangleBorder(
@@ -274,7 +284,6 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
           ),
-        )
-    );
+        ));
   }
 }

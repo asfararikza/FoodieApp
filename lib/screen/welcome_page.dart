@@ -1,10 +1,28 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:random_resep/login_page.dart';
+import 'package:random_resep/screen/login_page.dart';
 
-class WelcomePage extends StatelessWidget {
+class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
+
+  @override
+  State<WelcomePage> createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> {
+  @override
+  // void initState() {
+  //   super.initState();
+  //   Timer(Duration(seconds: 1), () {
+  //     Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => LoginPage()),
+  //     );
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +47,9 @@ class WelcomePage extends StatelessWidget {
                     height: 16,
                   ),
                   Text(
-                    'Explore Flavors from Around the World\nin Your Kitchen',
-                    style: GoogleFonts.poppins(fontSize: 18, color: Colors.lightGreen),
+                    'Explore Flavors from Around the World in Your Kitchen',
+                    style:
+                        GoogleFonts.poppins(fontSize: 18, color: Colors.black),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(
@@ -44,7 +63,7 @@ class WelcomePage extends StatelessWidget {
                         width: double.infinity,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
-                            color: Colors.lightGreen),
+                            color: Colors.lightGreen[200]),
                         child: Image.asset('assets/foodie-app.png'),
                       ),
                       Positioned(
