@@ -24,8 +24,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
               fontWeight: FontWeight.bold,
             )),
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
       ),
+      backgroundColor: Colors.grey[200],
       body: FutureBuilder(
         future: ApiRandomRecipes.instance.categoryRecipes(widget.tags),
         builder: (context, snapshot) {
@@ -51,60 +52,78 @@ class _buildHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          SizedBox(
-            height: 20,
-          ),
-          SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 16,
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 5,
+        mainAxisSpacing: 5,
+        childAspectRatio: 0.85,
+      ),
+      itemCount: recipes.recipes?.length,
+      itemBuilder: (BuildContext context, int index) {
+        var recipe = recipes.recipes?[index];
+        return Container(
+          color: Colors.white,
+          padding: EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  recipe!.image.toString(),
+                  height: 120,
+                  fit: BoxFit.cover,
                 ),
-                itemCount: recipes.recipes?.length,
-                itemBuilder: (BuildContext context, int index) {
-                  var recipe = recipes.recipes?[index];
-
-                  return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.lightGreen[100],
-                    ),
-                    padding: EdgeInsets.all(15),
-                    // width: 200,
-                    margin: EdgeInsets.only(right: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.network(
-                            recipe!.image.toString(),
-                            height: 90,
-                            fit: BoxFit.cover,
-                          ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Text(
+                recipe.title.toString(),
+                style: TextStyle(
+                  fontSize: 19,
+                  fontWeight: FontWeight.bold,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.access_time_outlined,
+                        size: 18,
+                        color: Colors.deepOrange,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        recipe.readyInMinutes.toString() + " mins",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.deepOrange,
                         ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          recipe.title.toString(),
-                          style: TextStyle(
-                            fontSize: 19,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              )),
-        ]));
+                      ),
+                    ],
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 15,
+                    color: Colors.grey[400],
+                  ),
+                ],
+              )
+            ],
+          ),
+        );
+      },
+    );
   }
 }

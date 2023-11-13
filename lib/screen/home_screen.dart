@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:random_resep/api/get_random_recipes_api.dart';
 import 'package:random_resep/api/recipes_model.dart';
+import 'package:random_resep/screen/category_screen.dart';
+import 'package:random_resep/screen/detaill_recipe_screen.dart';
+import 'package:random_resep/screen/result_search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,162 +13,352 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  TextEditingController searchQuery = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Center(
-          child: Text("Foodie",
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              )),
-        ),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-      ),
-      body: FutureBuilder(
-        future: ApiRandomRecipes.instance.loadRandomRecipes(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text("ADA ERROR");
-          }
-          if (snapshot.hasData && snapshot.data != null) {
-            RecipeModel recipes = RecipeModel.fromJson(snapshot.data!);
-            return _buildHomeScreen(recipes);
-          }
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
-    );
-  }
-}
-
-Widget _buildHomeScreen(RecipeModel recipes) {
-  return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        SizedBox(
-          height: 20,
-        ),
-        Text(
-          "Let's Eat",
-          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          "Healthy Food",
-          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(
-          height: 30,
-        ),
-        Text(
-          "Popular Recipes",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(
-          height: 16,
-        ),
-        SizedBox(
-            height: 300,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: recipes.recipes?.length,
-              itemBuilder: (BuildContext context, int index) {
-                var recipe = recipes.recipes?[index];
-
-                return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.lightGreen[100],
+        body: SingleChildScrollView(
+      child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            SizedBox(
+              height: 50,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: "Search Recipes",
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: EdgeInsets.zero,
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                    ),
+                    controller: searchQuery,
+                    onSubmitted: (value) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ResultSearchScreen(
+                                    query: value,
+                                  )));
+                      searchQuery.clear();
+                    },
                   ),
-                  padding: EdgeInsets.all(15),
-                  width: 200,
-                  margin: EdgeInsets.only(right: 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Container(
+                  width: 40,
+                  height: 40,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.lightGreen,
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox(
+              height: 35,
+            ),
+            Text(
+              "Let's Eat",
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              "Healthy Food",
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 35,
+            ),
+            //Recipe Categories
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  KategoriButton(
+                    namaKategori: "Brunch",
+                    iconKategori: Icons.breakfast_dining_rounded,
+                    tags: "breakfast",
+                  ),
+                  KategoriButton(
+                    namaKategori: "Lunch",
+                    iconKategori: Icons.lunch_dining_rounded,
+                    tags: "lunch",
+                  ),
+                  KategoriButton(
+                    namaKategori: "Dinner",
+                    iconKategori: Icons.dinner_dining_rounded,
+                    tags: "dinner",
+                  ),
+                  KategoriButton(
+                      namaKategori: "Vegan",
+                      iconKategori: Icons.icecream_rounded,
+                      tags: "vegetarian"),
+                  KategoriButton(
+                    namaKategori: "Dessert",
+                    iconKategori: Icons.cake_rounded,
+                    tags: "dessert",
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(
+              height: 35,
+            ),
+
+            //Popular Recipes
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Today's Fresh Recipes",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CategoryScreen(
+                                  categoryName: "Popular Recipe",
+                                  tags: "asian",
+                                )));
+                  },
+                  child: Row(
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.network(
-                          recipe!.image.toString(),
-                          height: 120,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
                       Text(
-                        recipe.title.toString(),
+                        "See All",
                         style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.deepOrange),
                       ),
-                      SizedBox(
-                        height: 10,
+                      Icon(
+                        Icons.keyboard_double_arrow_right_rounded,
+                        color: Colors.deepOrange,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            FutureBuilder(
+              future: ApiRandomRecipes.instance.loadRandomRecipes(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Text("ADA ERROR");
+                }
+                if (snapshot.hasData && snapshot.data != null) {
+                  RecipeModel recipes = RecipeModel.fromJson(snapshot.data!);
+                  return SizedBox(
+                    height: 250,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: recipes.recipes!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        var data = recipes.recipes![index];
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DetailRecipeScreen(
+                                          RecipeId: data.id.toString(),
+                                        )));
+                          },
+                          child: Container(
                             decoration: BoxDecoration(
-                              color: Colors.green,
                               borderRadius: BorderRadius.circular(20),
+                              color: Colors.grey[200],
                             ),
-                            padding: EdgeInsets.all(10),
-                            child: Row(
+                            padding: EdgeInsets.all(15),
+                            width: 220,
+                            margin: EdgeInsets.only(right: 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Icon(
-                                  Icons.restaurant_rounded,
-                                  color: Colors.white,
-                                  size: 15,
+                                //Recipe Image
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Image.network(
+                                    data.image.toString(),
+                                    height: 130,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                                 SizedBox(
-                                  width: 15,
+                                  height: 15,
                                 ),
+
+                                //Recipe Title
                                 Text(
-                                  "${recipe.servings}",
+                                  data.title.toString(),
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.bold,
                                   ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+
+                                //Recipe Calories
+
+                                // FutureBuilder(
+                                //   future: ApiRandomRecipes.instance
+                                //       .informationRecipe(data.id.toString()),
+                                //   builder:
+                                //       (BuildContext context, AsyncSnapshot snapshot) {
+                                //     if (snapshot.hasData && snapshot.data != null) {
+                                //       InfoRecipeModel dataInfo =
+                                //           InfoRecipeModel.fromJson(snapshot.data!);
+                                //       return Text(
+                                //           " ${dataInfo.nutrition?.nutrients?[0].amount} Calories",
+                                //           style: TextStyle(color: Colors.deepOrange));
+                                //     }
+                                //     return Text(
+                                //       "Calories",
+                                //       style: TextStyle(color: Colors.deepOrange),
+                                //     );
+                                //   },
+                                // ),
+
+                                SizedBox(
+                                  height: 10,
+                                ),
+
+                                //Recipe Info
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.schedule_outlined,
+                                          color: Colors.grey,
+                                          size: 15,
+                                        ),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        Text(
+                                          "${data.readyInMinutes} mins",
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.room_service_outlined,
+                                          color: Colors.grey,
+                                          size: 15,
+                                        ),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        Text(
+                                          "${data.servings} servings",
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
                           ),
-                          Text(
-                            "${recipe.readyInMinutes} min",
-                            style: TextStyle(color: Colors.deepOrange),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepOrange,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          onPressed: () {},
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("View Recipe"),
-                              Icon(Icons.arrow_forward_ios_rounded)
-                            ],
-                          ))
-                    ],
-                  ),
+                        );
+                      },
+                    ),
+                  );
+                }
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
               },
-            )),
-      ]));
+            ),
+          ])),
+    ));
+  }
+}
+
+class KategoriButton extends StatelessWidget {
+  final String namaKategori;
+  final IconData iconKategori;
+  final String tags;
+
+  KategoriButton(
+      {Key? key,
+      required this.namaKategori,
+      required this.iconKategori,
+      required this.tags})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CategoryScreen(
+                        categoryName: namaKategori,
+                        tags: tags,
+                      )));
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.lightGreen[100],
+          ),
+          padding: EdgeInsets.all(10),
+          margin: EdgeInsets.only(right: 15),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.green,
+                ),
+                child: Icon(
+                  iconKategori,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                namaKategori,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
 }

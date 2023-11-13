@@ -32,7 +32,7 @@ class _CalciInputScreenState extends State<CalciInputScreen> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32),
             ),
 
-            SizedBox(height: 10),
+            SizedBox(height: 20),
             Container(
                 decoration: BoxDecoration(
                     color: Colors.grey[200],
@@ -254,7 +254,7 @@ class _CalciInputScreenState extends State<CalciInputScreen> {
               ],
             ),
 
-            SizedBox(height: 35),
+            SizedBox(height: 70),
 
             //calculate button
             InkWell(

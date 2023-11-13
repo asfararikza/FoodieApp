@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:random_resep/api/get_random_recipes_api.dart';
 import 'package:random_resep/api/info_recipe_model.dart';
 import 'package:random_resep/api/result_search_model.dart';
-import 'package:random_resep/dummy_data.dart';
+import 'package:random_resep/screen/dummy/dummy_data.dart';
 
 class ResultSearchScreen extends StatefulWidget {
   const ResultSearchScreen({super.key, required this.query});
@@ -91,26 +91,30 @@ class buildResultScreen extends StatelessWidget {
                       SizedBox(
                         width: 15,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            data.title.toString(),
-                            style: TextStyle(
-                              fontSize: 19,
-                              fontWeight: FontWeight.bold,
+                      Container(
+                        width: MediaQuery.of(context).size.width - 200,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              data.title.toString(),
+                              style: TextStyle(
+                                fontSize: 19,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              // overflow: TextOverflow.ellipsis,
+                              // maxLines: 1,
+                              softWrap: true,
                             ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            "Tap to see detail recipe",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ],
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "Tap to see detail recipe",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
