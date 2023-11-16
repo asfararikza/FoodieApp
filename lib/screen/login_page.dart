@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:random_resep/data/database.dart';
+import 'package:random_resep/data/user_model.dart';
 import 'package:random_resep/screen/homepage_screen.dart';
 import 'package:random_resep/screen/register_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,6 +15,75 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isPasswordObscure = true;
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  late SharedPreferences _logindata;
+  late bool newuser;
+
+  @override
+  void initState() {
+    super.initState();
+    check_if_already_login();
+  }
+
+  void check_if_already_login() async {
+    _logindata = await SharedPreferences.getInstance();
+    newuser = (_logindata.getBool('login') ?? true);
+    print(newuser);
+    if (newuser == false) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => MyHomePage()));
+    }
+  }
+
+  Future<void> _login() async {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+
+    List<Map<String, dynamic>> accountList =
+        await DatabaseHelper.instance.getAccount(email);
+
+    if (accountList.isNotEmpty) {
+      Account account = Account.fromMap(accountList.first);
+
+      if (account.password == password) {
+        _logindata.setBool('login', false);
+        _logindata.setString('email', email);
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => MyHomePage()));
+        print(
+            "LOGIN SUCCESS.\nemail : ${account.email} password : ${account.password}}");
+      } else {
+        // Password tidak cocok
+        _showErrorDialog("Password salah");
+      }
+    } else {
+      // Email tidak ditemukan
+      _showErrorDialog("Email tidak ditemukan");
+    }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Error"),
+          content: Text(message),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 16),
                                 child: TextFormField(
+                                  controller: emailController,
                                   obscureText: false,
                                   decoration: InputDecoration(
                                     labelText: 'Email',
@@ -96,6 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 16),
                                 child: TextFormField(
+                                  controller: passwordController,
                                   obscureText: _isPasswordObscure,
                                   decoration: InputDecoration(
                                     labelText: 'Password',
@@ -141,10 +215,9 @@ class _LoginPageState extends State<LoginPage> {
                                 padding: const EdgeInsets.only(bottom: 16),
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (context) => MyHomePage(),
-                                    ));
+                                    _login();
+                                    emailController.clear();
+                                    passwordController.clear();
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.lightGreen,

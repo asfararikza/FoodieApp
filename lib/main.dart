@@ -5,7 +5,9 @@ import 'package:random_resep/screen/home_screen.dart';
 import 'package:random_resep/screen/homepage_screen.dart';
 import 'package:random_resep/screen/welcome_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(const MyApp());
 }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:random_resep/data/database.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -11,6 +12,57 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   bool _isPasswordObscure = true;
   bool _isTermsChecked = false;
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _register() async {
+    String email = _emailController.text.trim();
+    String username = _usernameController.text.trim();
+    String password = _passwordController.text.trim();
+
+    // Validasi input, misalnya pastikan semua field diisi
+    if (email.isEmpty || username.isEmpty || password.isEmpty) {
+      _showErrorDialog("Semua field harus diisi");
+      return;
+    }
+
+    // Cek apakah email sudah terdaftar
+    List<Map<String, dynamic>> accountList =
+        await DatabaseHelper.instance.getAccount(email);
+
+    if (accountList.isNotEmpty) {
+      _showErrorDialog("Email sudah terdaftar");
+    } else {
+      // Email belum terdaftar, tambahkan ke database
+      await DatabaseHelper.instance.insertAccount(email, username, password);
+
+      // Navigasi ke halaman login setelah registrasi berhasil
+      // Navigator.pop();
+      Navigator.pop(context);
+      print("REGISTER SUCCESS");
+    }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Error"),
+          content: Text(message),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +114,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 16),
                                 child: TextFormField(
+                                  controller: _usernameController,
                                   obscureText: false,
                                   decoration: InputDecoration(
                                     floatingLabelBehavior:
@@ -92,6 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 16),
                                 child: TextFormField(
+                                  controller: _emailController,
                                   obscureText: false,
                                   decoration: InputDecoration(
                                     floatingLabelBehavior:
@@ -122,6 +176,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 16),
                                 child: TextFormField(
+                                  controller: _passwordController,
                                   obscureText: _isPasswordObscure,
                                   decoration: InputDecoration(
                                     floatingLabelBehavior:
@@ -250,7 +305,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 16),
                                 child: ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _register();
+                                  },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.lightGreen,
                                     padding: const EdgeInsets.symmetric(
