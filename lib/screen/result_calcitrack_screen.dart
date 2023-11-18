@@ -5,6 +5,8 @@ import 'package:random_resep/api/get_random_recipes_api.dart';
 import 'package:random_resep/api/recipes_model.dart';
 import 'package:random_resep/api/suggestion_recipe_api.dart';
 import 'package:random_resep/api/suggestion_recipe_model.dart';
+import 'package:random_resep/screen/all_suggestion_screen.dart';
+import 'package:random_resep/screen/detaill_recipe_screen.dart';
 import 'package:random_resep/screen/dummy/dummy_data.dart';
 
 class ResultCalciTrackScreen extends StatefulWidget {
@@ -74,11 +76,11 @@ class _ResultCalciTrackScreenState extends State<ResultCalciTrackScreen> {
                           color: widget.bmiTextColor,
                         ),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
                       Text(
                         widget.bmiResult,
                         style: TextStyle(
-                          fontSize: 100,
+                          fontSize: 90,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -87,12 +89,12 @@ class _ResultCalciTrackScreenState extends State<ResultCalciTrackScreen> {
                 ),
 
                 //BMI Advise
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 Center(
                   child: Text(
                     widget.bmiAdvise,
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 15,
                     ),
                     // textAlign: TextAlign.center,
                   ),
@@ -125,7 +127,7 @@ class _ResultCalciTrackScreenState extends State<ResultCalciTrackScreen> {
                           color: widget.bmiTextColor,
                         ),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -133,7 +135,7 @@ class _ResultCalciTrackScreenState extends State<ResultCalciTrackScreen> {
                           Text(
                             widget.bmrResult,
                             style: TextStyle(
-                              fontSize: 100,
+                              fontSize: 90,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -192,7 +194,15 @@ class _ResultCalciTrackScreenState extends State<ResultCalciTrackScreen> {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AllSuggestionScreen(
+                                      minCal: widget.mincaloriePerMeal,
+                                      maxCal: widget.maxcaloriePerMeal,
+                                    )));
+                      },
                       child: Row(
                         children: [
                           Text(
@@ -237,113 +247,6 @@ class _ResultCalciTrackScreenState extends State<ResultCalciTrackScreen> {
                     return Text("Tidak ada rekomendasi resep");
                   },
                 ),
-
-                // Container(
-                //   decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(20),
-                //     color: Colors.grey[200],
-                //   ),
-                //   padding: EdgeInsets.all(15),
-                //   width: 220,
-                //   margin: EdgeInsets.only(right: 15),
-                //   child: Column(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       //Recipe Image
-                //       ClipRRect(
-                //         borderRadius: BorderRadius.circular(20),
-                //         child: Image.network(
-                //           data.recipeData["recipes"][0]["image"].toString(),
-                //           height: 130,
-                //           fit: BoxFit.cover,
-                //         ),
-                //       ),
-                //       SizedBox(
-                //         height: 15,
-                //       ),
-
-                //       //Recipe Title
-                //       Text(
-                //         data.recipeData["recipes"][0]["title"].toString(),
-                //         style: TextStyle(
-                //           fontSize: 19,
-                //           fontWeight: FontWeight.bold,
-                //         ),
-                //         overflow: TextOverflow.ellipsis,
-                //         maxLines: 1,
-                //       ),
-                //       SizedBox(
-                //         height: 10,
-                //       ),
-
-                //       //Recipe Calories
-
-                //       // FutureBuilder(
-                //       //   future: ApiRandomRecipes.instance
-                //       //       .informationRecipe("660504"),
-                //       //   builder:
-                //       //       (BuildContext context, AsyncSnapshot snapshot) {
-                //       //     if (snapshot.hasData && snapshot.data != null) {
-                //       //       InfoRecipeModel dataInfo =
-                //       //           InfoRecipeModel.fromJson(snapshot.data!);
-                //       //       return Text(
-                //       //           " ${dataInfo.nutrition?.nutrients?[0].amount} Calories",
-                //       //           style: TextStyle(color: Colors.deepOrange));
-                //       //     }
-                //       //     return Text(
-                //       //       "Calories",
-                //       //       style: TextStyle(color: Colors.deepOrange),
-                //       //     );
-                //       //   },
-                //       // ),
-
-                //       SizedBox(
-                //         height: 10,
-                //       ),
-
-                //       //Recipe Info
-                //       Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //         children: [
-                //           Row(
-                //             children: [
-                //               Icon(
-                //                 Icons.schedule_outlined,
-                //                 color: Colors.grey,
-                //                 size: 15,
-                //               ),
-                //               SizedBox(
-                //                 width: 8,
-                //               ),
-                //               Text(
-                //                 "${data.recipeData["recipes"][0]["readyInMinutes"]} mins",
-                //                 style: TextStyle(color: Colors.grey),
-                //               ),
-                //             ],
-                //           ),
-                //           Row(
-                //             children: [
-                //               Icon(
-                //                 Icons.room_service_outlined,
-                //                 color: Colors.grey,
-                //                 size: 15,
-                //               ),
-                //               SizedBox(
-                //                 width: 8,
-                //               ),
-                //               Text(
-                //                 "${data.recipeData["recipes"][0]["servings"]} servings",
-                //                 style: TextStyle(
-                //                   color: Colors.grey,
-                //                 ),
-                //               ),
-                //             ],
-                //           ),
-                //         ],
-                //       ),
-                //     ],
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -365,93 +268,68 @@ class buildCardRecipe extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
             var recipe = recipes[index];
 
-            return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.grey[200],
-              ),
-              padding: EdgeInsets.all(15),
-              width: 220,
-              margin: EdgeInsets.only(right: 15),
-              child: Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //Recipe Image
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.network(
-                        recipe.image.toString(),
-                        height: 135,
-                        fit: BoxFit.cover,
+            return InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DetailRecipeScreen(
+                            RecipeId: recipe.id.toString())));
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.grey[200],
+                ),
+                padding: EdgeInsets.all(15),
+                width: 220,
+                margin: EdgeInsets.only(right: 15),
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //Recipe Image
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.network(
+                          recipe.image.toString(),
+                          height: 135,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-
-                    //Recipe Title
-                    Text(
-                      recipe.title.toString(),
-                      style: TextStyle(
-                        fontSize: 19,
-                        fontWeight: FontWeight.bold,
+                      SizedBox(
+                        height: 15,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
 
-                    //Recipe Calories
-                    Text(" ${recipe.calories} Calories",
-                        style: TextStyle(color: Colors.deepOrange)),
+                      //Recipe Title
+                      Text(
+                        recipe.title.toString(),
+                        style: TextStyle(
+                          fontSize: 19,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                      // SizedBox(
+                      //   height: 5,
+                      // ),
 
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ],
+                      //Recipe Calories
+                      Text("${recipe.calories} Calories",
+                          style: TextStyle(
+                            color: Colors.deepOrange,
+                            fontSize: 18,
+                          )),
+
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
+                    ],
+                  ),
                 ),
               ),
             );
-            // Container(
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(20),
-            //     color: Colors.lightGreen[100],
-            //   ),
-            //   padding: EdgeInsets.all(15),
-            //   width: 200,
-            //   margin: EdgeInsets.only(right: 15),
-            //   child: Column(
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       ClipRRect(
-            //         borderRadius: BorderRadius.circular(20),
-            //         child: Image.network(
-            //           recipe!.image.toString(),
-            //           height: 120,
-            //           fit: BoxFit.cover,
-            //         ),
-            //       ),
-            //       SizedBox(
-            //         height: 15,
-            //       ),
-            //       Text(
-            //         recipe.title.toString(),
-            //         style: TextStyle(
-            //           fontSize: 19,
-            //           fontWeight: FontWeight.bold,
-            //         ),
-            //         overflow: TextOverflow.ellipsis,
-            //         maxLines: 1,
-            //       ),
-            //       SizedBox(
-            //         height: 10,
-            //       )
-            //     ],
-            //   ),
-            // );
           },
         ));
   }

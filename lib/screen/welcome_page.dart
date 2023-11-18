@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:random_resep/screen/homepage_screen.dart';
 import 'package:random_resep/screen/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
@@ -13,16 +15,24 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
+  late SharedPreferences _logindata;
+  late bool newuser;
+
   @override
-  // void initState() {
-  //   super.initState();
-  //   Timer(Duration(seconds: 1), () {
-  //     Navigator.pushReplacement(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => LoginPage()),
-  //     );
-  //   });
-  // }
+  void initState() {
+    super.initState();
+    check_if_already_login();
+  }
+
+  void check_if_already_login() async {
+    _logindata = await SharedPreferences.getInstance();
+    newuser = (_logindata.getBool('login') ?? true);
+    print(newuser);
+    if (newuser == false) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => MyHomePage()));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

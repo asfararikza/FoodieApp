@@ -44,11 +44,11 @@ class CalculateBmi {
     double minWeight = minIdealWeight();
     double maxWeight = maxIdealWeight();
     if (_bmi >= 25) {
-      return 'You have a more than normal body weight.\nTry to do more Exercise. Your ideal weight is ${minWeight.toStringAsFixed(1)} - ${maxWeight.toStringAsFixed(1)} kg';
+      return 'You have a more than normal body weight.Try to do more Exercise. Your ideal weight is ${minWeight.toStringAsFixed(1)} - ${maxWeight.toStringAsFixed(1)} kg';
     } else if (_bmi > 18.5) {
-      return 'You have a normal body weight.\nGood job!';
+      return 'You have a normal body weight. Good job!';
     } else {
-      return 'You have a lower than normal body weight.\n Try to eat more. Your ideal weight is ${minWeight.toStringAsFixed(1)} - ${maxWeight.toStringAsFixed(1)} kg';
+      return 'You have a lower than normal body weight. Try to eat more. Your ideal weight is ${minWeight.toStringAsFixed(1)} - ${maxWeight.toStringAsFixed(1)} kg';
     }
   }
 

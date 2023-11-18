@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:random_resep/api/get_random_recipes_api.dart';
 import 'package:random_resep/api/recipes_model.dart';
+import 'package:random_resep/api/suggestion_recipe_api.dart';
+import 'package:random_resep/api/suggestion_recipe_model.dart';
 import 'package:random_resep/screen/detaill_recipe_screen.dart';
 
-class CategoryScreen extends StatefulWidget {
-  const CategoryScreen(
-      {super.key, required this.categoryName, required this.tags});
-  final String categoryName;
-  final String tags;
+class AllSuggestionScreen extends StatefulWidget {
+  const AllSuggestionScreen(
+      {super.key, required this.minCal, required this.maxCal});
+  final String minCal;
+  final String maxCal;
 
   @override
-  State<CategoryScreen> createState() => _CategoryScreenState();
+  State<AllSuggestionScreen> createState() => _AllSuggestionScreenState();
 }
 
-class _CategoryScreenState extends State<CategoryScreen> {
+class _AllSuggestionScreenState extends State<AllSuggestionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
-        title: Text(widget.categoryName,
+        title: Text("Suggestions Recipes",
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -29,13 +31,20 @@ class _CategoryScreenState extends State<CategoryScreen> {
       ),
       backgroundColor: Colors.grey[200],
       body: FutureBuilder(
-        future: ApiRandomRecipes.instance.categoryRecipes(widget.tags),
+        future: ApiSuggestionRecipes.instance
+            .allSuggestionRecipe(widget.minCal, widget.maxCal),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text("ADA ERROR");
           }
           if (snapshot.hasData && snapshot.data != null) {
-            RecipeModel recipes = RecipeModel.fromJson(snapshot.data!);
+            List<Map<String, dynamic>> listRecipes =
+                List.from(snapshot.data! as List<dynamic>);
+
+            List<SuggestionRecipesModel> recipes = listRecipes
+                .map(
+                    (jsonRecipe) => SuggestionRecipesModel.fromJson(jsonRecipe))
+                .toList();
             return _buildHomeScreen(recipes: recipes);
           }
           return Center(
@@ -49,7 +58,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
 class _buildHomeScreen extends StatelessWidget {
   const _buildHomeScreen({super.key, required this.recipes});
-  final RecipeModel recipes;
+  final List<SuggestionRecipesModel> recipes;
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +69,9 @@ class _buildHomeScreen extends StatelessWidget {
         mainAxisSpacing: 5,
         childAspectRatio: 0.85,
       ),
-      itemCount: recipes.recipes?.length,
+      itemCount: recipes.length,
       itemBuilder: (BuildContext context, int index) {
-        var recipe = recipes.recipes?[index];
+        var recipe = recipes[index];
         return InkWell(
           onTap: () {
             Navigator.push(
@@ -114,7 +123,7 @@ class _buildHomeScreen extends StatelessWidget {
                           width: 5,
                         ),
                         Text(
-                          recipe.readyInMinutes.toString() + " mins",
+                          recipe.calories.toString() + "kcal",
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.deepOrange,

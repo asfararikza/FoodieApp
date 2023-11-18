@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:random_resep/api/get_random_recipes_api.dart';
+import 'package:random_resep/api/info_recipe_model.dart';
 import 'package:random_resep/api/recipes_model.dart';
 import 'package:random_resep/screen/category_screen.dart';
 import 'package:random_resep/screen/detaill_recipe_screen.dart';
+import 'package:random_resep/screen/profile_screen.dart';
 import 'package:random_resep/screen/result_search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,55 +21,88 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
-      child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SizedBox(
-              height: 50,
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            height: 140,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25)),
+              color: Colors.lightGreen[100],
             ),
-            Row(
+          ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
               children: [
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "Search Recipes",
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide.none,
+                SizedBox(height: 60),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: "Search Recipes",
+                          prefixIcon: Icon(Icons.search),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: EdgeInsets.zero,
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                        controller: searchQuery,
+                        onSubmitted: (value) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ResultSearchScreen(
+                                        query: value,
+                                      )));
+                          searchQuery.clear();
+                        },
                       ),
-                      contentPadding: EdgeInsets.zero,
-                      filled: true,
-                      fillColor: Colors.grey[200],
                     ),
-                    controller: searchQuery,
-                    onSubmitted: (value) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ResultSearchScreen(
-                                    query: value,
-                                  )));
-                      searchQuery.clear();
-                    },
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  width: 40,
-                  height: 40,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.lightGreen,
-                  ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProfilePage()));
+                      },
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.green,
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-
+          )
+        ],
+      ),
+      Container(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             SizedBox(
-              height: 35,
+              height: 15,
             ),
             Text(
               "Let's Eat",
@@ -214,27 +249,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
                                 ),
-                                SizedBox(
-                                  height: 10,
-                                ),
 
                                 //Recipe Calories
 
                                 // FutureBuilder(
                                 //   future: ApiRandomRecipes.instance
                                 //       .informationRecipe(data.id.toString()),
-                                //   builder:
-                                //       (BuildContext context, AsyncSnapshot snapshot) {
-                                //     if (snapshot.hasData && snapshot.data != null) {
+                                //   builder: (BuildContext context,
+                                //       AsyncSnapshot snapshot) {
+                                //     if (snapshot.hasData &&
+                                //         snapshot.data != null) {
                                 //       InfoRecipeModel dataInfo =
-                                //           InfoRecipeModel.fromJson(snapshot.data!);
+                                //           InfoRecipeModel.fromJson(
+                                //               snapshot.data!);
                                 //       return Text(
                                 //           " ${dataInfo.nutrition?.nutrients?[0].amount} Calories",
-                                //           style: TextStyle(color: Colors.deepOrange));
+                                //           style: TextStyle(
+                                //               color: Colors.deepOrange));
                                 //     }
                                 //     return Text(
                                 //       "Calories",
-                                //       style: TextStyle(color: Colors.deepOrange),
+                                //       style:
+                                //           TextStyle(color: Colors.deepOrange),
                                 //     );
                                 //   },
                                 // ),
@@ -297,8 +333,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
             ),
-          ])),
-    ));
+          ],
+        ),
+      ),
+    ])));
   }
 }
 

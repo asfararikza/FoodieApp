@@ -16,7 +16,7 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    String path = join(await getDatabasesPath(), 'my_db.db');
+    String path = join(await getDatabasesPath(), 'foods_db.db');
     return await openDatabase(path, version: 1, onCreate: _createTables);
   }
 
@@ -40,6 +40,18 @@ class DatabaseHelper {
         readyInMinutes TEXT,
         servings TEXT,
         calories TEXT,
+        FOREIGN KEY (emailUser) REFERENCES accounts (email)
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE payment (
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        emailUser TEXT,
+        paymentDate TEXT,
+        expiredDate TEXT,
+        categoryPremium TEXT,
+        price TEXT,
         FOREIGN KEY (emailUser) REFERENCES accounts (email)
       )
     ''');
@@ -84,6 +96,15 @@ class DatabaseHelper {
         .update("accounts", row, where: 'email = ?', whereArgs: [email]);
   }
 
+  Future<int> updateUsername(String email, String newUsername) async {
+    Database db = await instance.database;
+    Map<String, dynamic> row = {
+      'username': newUsername,
+    };
+    return await db
+        .update("accounts", row, where: 'email = ?', whereArgs: [email]);
+  }
+
   Future<List<Map<String, dynamic>>> getAccount(String email) async {
     Database db = await instance.database;
     return await db.query("accounts", where: 'email = ?', whereArgs: [email]);
@@ -118,5 +139,39 @@ class DatabaseHelper {
     Database db = await instance.database;
     await db
         .delete('favorite_recipes', where: 'emailUser = ?', whereArgs: [email]);
+  }
+
+  Future<int> insertPayment(String email, String date, String category,
+      String price, String expired) async {
+    Database db = await instance.database;
+    Map<String, dynamic> row = {
+      'emailUser': email,
+      'paymentDate': date,
+      'expiredDate': expired,
+      'categoryPremium': category,
+      'price': price,
+    };
+    updateIsPremium(email, 1);
+    return await db.insert("payment", row);
+  }
+
+  Future<List<Map<String, dynamic>>> getListPayment(String email) async {
+    Database db = await instance.database;
+    return await db
+        .query("payment", where: 'emailUser = ?', whereArgs: [email]);
+  }
+
+  Future<void> deleteAllPayment(String email) async {
+    Database db = await instance.database;
+    await db.delete('payment', where: 'emailUser = ?', whereArgs: [email]);
+  }
+
+  Future<int> updateIsPremium(String email, int isPremium) async {
+    Database db = await instance.database;
+    Map<String, dynamic> row = {
+      'isPremium': isPremium,
+    };
+    return await db
+        .update("accounts", row, where: 'email = ?', whereArgs: [email]);
   }
 }

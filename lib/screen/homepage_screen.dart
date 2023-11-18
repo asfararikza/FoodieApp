@@ -5,6 +5,7 @@ import 'package:random_resep/screen/calci_track_screen.dart';
 import 'package:random_resep/screen/dummy/dummy_home.dart';
 import 'package:random_resep/screen/favorite_screen.dart';
 import 'package:random_resep/screen/home_screen.dart';
+import 'package:random_resep/screen/profile_screen.dart';
 import 'package:random_resep/screen/setting_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -50,10 +51,10 @@ class _MyHomePageState extends State<MyHomePage> {
   // }
 
   final List<Widget> _pages = [
-    dummyHomeScreen(),
+    HomeScreen(),
     CalciInputScreen(),
     FavoriteScreen(),
-    SettingScreen(),
+    ProfilePage(),
   ];
 
   @override

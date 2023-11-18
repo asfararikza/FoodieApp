@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:random_resep/api/get_random_recipes_api.dart';
 import 'package:random_resep/api/info_recipe_model.dart';
 import 'package:random_resep/api/result_search_model.dart';
+import 'package:random_resep/screen/detaill_recipe_screen.dart';
 import 'package:random_resep/screen/dummy/dummy_data.dart';
 
 class ResultSearchScreen extends StatefulWidget {
@@ -75,48 +76,57 @@ class buildResultScreen extends StatelessWidget {
             itemCount: result.results!.length,
             itemBuilder: (BuildContext context, int index) {
               var data = result.results![index];
-              return Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.network(
-                          data.image.toString(),
-                          height: 100,
-                          fit: BoxFit.cover,
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DetailRecipeScreen(
+                              RecipeId: data.id.toString())));
+                },
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.network(
+                            data.image.toString(),
+                            height: 100,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width - 200,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              data.title.toString(),
-                              style: TextStyle(
-                                fontSize: 19,
-                                fontWeight: FontWeight.bold,
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width - 200,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                data.title.toString(),
+                                style: TextStyle(
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                // overflow: TextOverflow.ellipsis,
+                                // maxLines: 1,
+                                softWrap: true,
                               ),
-                              // overflow: TextOverflow.ellipsis,
-                              // maxLines: 1,
-                              softWrap: true,
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              "Tap to see detail recipe",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ],
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                "Tap to see detail recipe",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               );

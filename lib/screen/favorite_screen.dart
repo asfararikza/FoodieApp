@@ -60,15 +60,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           ),
         ),
         actions: [
-          // IconButton(
-          //     onPressed: () {},
-          //     icon: Icon(Icons.more_horiz, color: Colors.black)),
           PopupMenuButton<String>(
             icon: Icon(Icons.more_horiz, color: Colors.black),
             onSelected: (value) {
               if (value == 'deleteAll') {
-                // Tambahkan logika untuk menghapus semua favorit di sini
-                // Misalnya, panggil fungsi untuk menghapus semua favorit dari database
                 DatabaseHelper.instance.deleteAllFavorites(_email);
                 _loadFavoriteRecipes();
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -106,143 +101,128 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   }
 
   Widget _buildFavoriteRecipeCard(FavoriteRecipe favoriteRecipe) {
-    return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: Color.fromARGB(255, 240, 239, 239),
-        ),
-        height: 120,
-        width: MediaQuery.of(context).size.width * 0.9,
-        margin: EdgeInsets.all(10),
-        child: Row(
-          children: [
-            Container(
-              width: 140.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(favoriteRecipe.image)),
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8.0),
-                    bottomLeft: Radius.circular(8.0)),
-                // color: Colors.redAccent,
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  DetailRecipeScreen(RecipeId: favoriteRecipe.recipeId)),
+        );
+      },
+      child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: Color.fromARGB(255, 240, 239, 239),
+          ),
+          height: 130,
+          width: MediaQuery.of(context).size.width * 0.9,
+          margin: EdgeInsets.all(10),
+          child: Row(
+            children: [
+              Container(
+                width: 140.0,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(favoriteRecipe.image)),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8.0),
+                      bottomLeft: Radius.circular(8.0)),
+                  // color: Colors.redAccent,
+                ),
               ),
-            ),
-            SizedBox(
-              width: 15,
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width * 0.5,
-              padding: EdgeInsets.symmetric(vertical: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        favoriteRecipe.title,
-                        style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        // softWrap: true,
-                      ),
-                      Text('${favoriteRecipe.calories} Calories',
+              SizedBox(
+                width: 15,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.5,
+                padding: EdgeInsets.only(top: 18),
+                height: 130,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          favoriteRecipe.title,
                           style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.deepOrange,
-                          )),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.schedule_outlined,
-                            color: Colors.grey,
-                            size: 15,
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold,
                           ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            '${favoriteRecipe.readyInMinutes}m',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          // softWrap: true,
+                        ),
+                        Text('${favoriteRecipe.calories} Calories',
                             style: TextStyle(
                               fontSize: 15,
+                              color: Colors.deepOrange,
+                            )),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.schedule_outlined,
                               color: Colors.grey,
+                              size: 13,
                             ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Icon(
-                            Icons.room_service_outlined,
-                            color: Colors.grey,
-                            size: 15,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            '${favoriteRecipe.servings}',
-                            style: TextStyle(
-                              fontSize: 15,
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              '${favoriteRecipe.readyInMinutes} m',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 13,
+                            ),
+                            Icon(
+                              Icons.room_service_outlined,
                               color: Colors.grey,
+                              size: 13,
                             ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              '${favoriteRecipe.servings} serv.',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.favorite_rounded,
+                            color: Colors.red,
+                            size: 25,
                           ),
-                        ],
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.favorite_rounded, color: Colors.red),
-                        onPressed: () {
-                          _removeFavoriteRecipe(favoriteRecipe);
-                        },
-                      ),
-                    ],
-                  ),
-                ],
+                          onPressed: () {
+                            _removeFavoriteRecipe(favoriteRecipe);
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ));
-    // Card(
-    //   margin: EdgeInsets.all(8.0),
-    //   child: ListTile(
-    //     leading: Image.network(favoriteRecipe.image),
-    //     title: Text(favoriteRecipe.title),
-    //     subtitle: Column(
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: [
-    //         Text('Ready in: ${favoriteRecipe.readyInMinutes} mins'),
-    //         Text('Servings: ${favoriteRecipe.servings}'),
-    //         Text('Calories: ${favoriteRecipe.calories}'),
-    //       ],
-    //     ),
-    //     trailing: IconButton(
-    //       icon: Icon(Icons.favorite_rounded, color: Colors.red),
-    //       onPressed: () {
-    //         _removeFavoriteRecipe(favoriteRecipe);
-    //       },
-    //     ),
-    //     onTap: () {
-    //       // Navigasi ke halaman detail resep
-    //       Navigator.push(
-    //         context,
-    //         MaterialPageRoute(
-    //             builder: (context) =>
-    //                 DetailRecipeScreen(RecipeId: favoriteRecipe.recipeId)),
-    //       );
-    //     },
-    //   ),
-    // );
+            ],
+          )),
+    );
   }
 
   Future<void> _removeFavoriteRecipe(FavoriteRecipe favoriteRecipe) async {
@@ -253,6 +233,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       SnackBar(
         content: Text('Recipe removed from favorites.'),
         duration: Duration(seconds: 2),
+        backgroundColor: Colors.red,
       ),
     );
   }

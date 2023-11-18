@@ -8,6 +8,11 @@ class ApiSuggestionRecipes {
     return api.get(
         "/recipes/findByNutrients?apiKey=0dd4eb84a40745b9a88fcf7361d5683d&minCalories=$minCal&maxCalories=$maxCal&number=10");
   }
+
+  Future<List<dynamic>> allSuggestionRecipe(String minCal, String maxCal) {
+    return api.get(
+        "/recipes/findByNutrients?apiKey=0dd4eb84a40745b9a88fcf7361d5683d&minCalories=$minCal&maxCalories=$maxCal&number=20");
+  }
 }
 
 class api {
