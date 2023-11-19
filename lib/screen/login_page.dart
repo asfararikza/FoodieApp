@@ -1,3 +1,4 @@
+import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:random_resep/data/database.dart';
@@ -48,7 +49,8 @@ class _LoginPageState extends State<LoginPage> {
     if (accountList.isNotEmpty) {
       Account account = Account.fromMap(accountList.first);
 
-      if (account.password == password) {
+      // if (account.password == password) {
+      if (BCrypt.checkpw(password, account.password)) {
         _logindata.setBool('login', false);
         _logindata.setString('email', email);
         Navigator.of(context).pushReplacement(
@@ -78,6 +80,9 @@ class _LoginPageState extends State<LoginPage> {
                 Navigator.of(context).pop();
               },
               child: Text("OK"),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.lightGreen),
+              ),
             ),
           ],
         );
@@ -265,7 +270,7 @@ class _LoginPageState extends State<LoginPage> {
                                       ' Sign Up Here',
                                       style: GoogleFonts.poppins(
                                         textStyle: const TextStyle(
-                                          color: Colors.lightGreen,
+                                          color: Colors.deepOrange,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),

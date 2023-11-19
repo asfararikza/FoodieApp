@@ -114,16 +114,8 @@ class _buildHomeScreen extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Icon(
-                          Icons.access_time_outlined,
-                          size: 18,
-                          color: Colors.deepOrange,
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
                         Text(
-                          recipe.calories.toString() + "kcal",
+                          recipe.calories.toString() + " kcal",
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.deepOrange,

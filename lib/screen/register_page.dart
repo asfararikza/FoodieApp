@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:random_resep/data/database.dart';
+import 'package:bcrypt/bcrypt.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -35,7 +36,10 @@ class _RegisterPageState extends State<RegisterPage> {
       _showErrorDialog("Email sudah terdaftar");
     } else {
       // Email belum terdaftar, tambahkan ke database
-      await DatabaseHelper.instance.insertAccount(email, username, password);
+      String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+      print(hashedPassword);
+      await DatabaseHelper.instance
+          .insertAccount(email, username, hashedPassword);
 
       // Navigasi ke halaman login setelah registrasi berhasil
       // Navigator.pop();

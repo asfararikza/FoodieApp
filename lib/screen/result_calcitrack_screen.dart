@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:random_resep/api/get_random_recipes_api.dart';
 import 'package:random_resep/api/recipes_model.dart';
 import 'package:random_resep/api/suggestion_recipe_api.dart';
@@ -166,18 +167,31 @@ class _ResultCalciTrackScreenState extends State<ResultCalciTrackScreen> {
                       TextSpan(
                         text:
                             "Based on your BMI, you need to consume at least ",
-                      ),
-                      TextSpan(
-                        text:
-                            "${widget.mincaloriePerMeal} - ${widget.maxcaloriePerMeal}",
-                        style: TextStyle(
-                          color: Colors.deepOrange,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                        style: GoogleFonts.poppins(
+                          textStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                          ),
                         ),
                       ),
                       TextSpan(
+                          text:
+                              "${widget.mincaloriePerMeal} - ${widget.maxcaloriePerMeal}",
+                          style: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                              color: Colors.deepOrange,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                      TextSpan(
                         text: " calories per meal to get your ideal weight",
+                        style: GoogleFonts.poppins(
+                          textStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -311,9 +325,6 @@ class buildCardRecipe extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),
-                      // SizedBox(
-                      //   height: 5,
-                      // ),
 
                       //Recipe Calories
                       Text("${recipe.calories} Calories",
@@ -321,10 +332,6 @@ class buildCardRecipe extends StatelessWidget {
                             color: Colors.deepOrange,
                             fontSize: 18,
                           )),
-
-                      // SizedBox(
-                      //   height: 10,
-                      // ),
                     ],
                   ),
                 ),

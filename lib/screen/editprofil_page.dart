@@ -5,6 +5,7 @@ import 'package:random_resep/data/database.dart';
 import 'package:random_resep/data/user_model.dart';
 import 'package:random_resep/screen/profile_screen.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:random_resep/screen/welcome_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EditProfile extends StatefulWidget {
@@ -265,41 +266,103 @@ class _EditProfileState extends State<EditProfile> {
                           )),
                       child: Text(_user.isPremium == 1 ? 'Premium' : 'FREE'),
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Password",
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                          fontSize: 16.0,
+                          color: Color(0xFF102945),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      width: 400,
+                      height: 50,
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                          color: Colors.lightGreen[100],
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Colors.grey,
+                            width: 2,
+                          )),
+                      child: Text(_user.password),
+                    ),
                   ],
                 ),
                 Padding(
                   padding:
                       EdgeInsets.only(top: height / 30, bottom: height / 30),
-                  child: Container(
-                    width: 150,
-                    height: 40,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        DatabaseHelper.instance
-                            .updateUsername(_email, _usernameController.text);
-                        Navigator.of(context).pop(
-                          MaterialPageRoute(
-                            builder: (context) => ProfilePage(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: 150,
+                        height: 40,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            DatabaseHelper.instance.deleteAccount(_email);
+                            _logindata.setBool('login', true);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => WelcomePage()));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey[200],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.lightGreen,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
+                          child: const Center(
+                            child: Text(
+                              'Delete Account',
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.red,
+                                // fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                      child: const Center(
-                        child: Text(
-                          'Update',
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            color: Colors.white,
-                            // fontWeight: FontWeight.bold,
+                      Container(
+                        width: 150,
+                        height: 40,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            DatabaseHelper.instance.updateUsername(
+                                _email, _usernameController.text);
+                            Navigator.of(context).pop(
+                              MaterialPageRoute(
+                                builder: (context) => ProfilePage(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.lightGreen,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Update',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.white,
+                                // fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ],

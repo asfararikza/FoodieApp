@@ -80,6 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
         backgroundColor: Colors.lightGreen,
         elevation: 0,
+        automaticallyImplyLeading: false,
       ),
       backgroundColor: Color(0xffF8FBFA),
       body: SingleChildScrollView(

@@ -84,7 +84,8 @@ class _WelcomePageState extends State<WelcomePage> {
                           child: GestureDetector(
                             behavior: HitTestBehavior.opaque,
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
+                              Navigator.of(context)
+                                  .pushReplacement(MaterialPageRoute(
                                 builder: (context) => LoginPage(),
                               ));
                             },

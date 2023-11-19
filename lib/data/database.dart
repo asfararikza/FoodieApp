@@ -174,4 +174,20 @@ class DatabaseHelper {
     return await db
         .update("accounts", row, where: 'email = ?', whereArgs: [email]);
   }
+
+  Future<int> deleteAccount(String email) async {
+    Database db = await instance.database;
+
+    // Delete from favorite_recipes table
+    await db
+        .delete("favorite_recipes", where: 'emailUser = ?', whereArgs: [email]);
+
+    // Delete from payment table
+    await db.delete("payment", where: 'emailUser = ?', whereArgs: [email]);
+
+    // Delete from accounts table
+    await db.delete("accounts", where: 'email = ?', whereArgs: [email]);
+
+    return 1; // indicating the success of the operation
+  }
 }
